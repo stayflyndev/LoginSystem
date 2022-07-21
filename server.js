@@ -1,11 +1,24 @@
 const express = require("express");
-const app = express()
+const app = require('./src/app')
 
-app.listen(3000);
+const PORT = 5000;
+app.listen(PORT || process.env);
 
 const path = require('path')
-app.use('/', express.static(path.join(__dirname, '')))
+app.use('/', express.static(path.join(__dirname, './src')))
+
+//render pages
+//views
+app.set("view-engine", 'ejs');
 
 app.get("/", (req, res) => {
-    res.sendFile('index.html')
+    res.render('index.ejs')
+})
+
+app.get("/login", (req, res) => {
+    res.render('login.ejs')
+})
+
+app.get("/register", (req, res) => {
+    res.render('register.ejs')
 })
