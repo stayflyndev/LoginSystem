@@ -11,9 +11,7 @@
 <body class="text-center">
     <div class="container">
     <main class="form-signin">
-      <% if (messages.error){ %>
-<%= messages.error %>
-  <%    } %>
+    
       <form action="/login" method="POST">
     
         <h1 class="h3 mb-3 fw-normal">Login System</h1>
@@ -25,7 +23,13 @@
             colors="primary:#b4b4b4,secondary:#f4b69c"
             style="width:350px;height:350px">
         </lord-icon>
+       <div>
+        <% if (messages.error){ %>
+          <%= messages.error %>
+            <%    } %>
+       </div>
         <div class="form-floating">
+          
           <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
           <label for="floatingInput">Email address</label>
         </div>

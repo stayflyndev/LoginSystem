@@ -13,11 +13,11 @@ const session = require("express-session")
 //local users
 const users = []
 
-const findUserByEmail = () =>{ 
+const findUserByEmail = (email) =>{ 
 return users.find(user => user.email === email)
 }
 
-initializePassport(passport, findUserByEmail())
+initializePassport(passport, findUserByEmail)
 
 const PORT = 5000;
 app.listen(PORT || process.env);
@@ -26,11 +26,11 @@ app.use(express.urlencoded({
 }));
 
 const path = require('path')
-app.use('/', express.static(path.join(__dirname, './src')))
+app.use('/src', express.static(path.join(__dirname, './src')))
 app.use(flash())
 app.use(session({
     secret: process.env.SESSION_SECRET, 
-    resace: false,
+    resave: false,
     saveUninitialized: false
 }))
 app.use(passport.initialize())
@@ -49,10 +49,10 @@ app.get("/login", (req, res) => {
     res.render('login.ejs')
 })
 
-app.post("/login", passport.authenticate('local', 
-{successRedirect: '/',
-failure: '/',
-failureFlash: true
+app.post("/login", passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
 }
 ))
 
@@ -61,8 +61,8 @@ app.get("/register", (req, res) => {
 })
 
 app.post('/register', async (req, res) => {
-    const name = req.body.password
-    const email = req.body.password
+    const name = req.body.name
+    const email = req.body.email
     const password = req.body.password
 
 
@@ -76,7 +76,8 @@ app.post('/register', async (req, res) => {
             email: email,
             password: bcrypt_pw
         })
-        res.redirect('/')
+        res.redirect('/login')
+
     } catch {
         res.redirect('/register')
 

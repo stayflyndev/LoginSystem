@@ -16,6 +16,7 @@ const bcrypt = require('bcrypt')
 
         try {
             if (await bcrypt.compare(password, user.password)) {
+                //user logged in as
                 return done(null, user)
             } else {
                 return done(null, false, {
@@ -29,8 +30,7 @@ const bcrypt = require('bcrypt')
 
 
     passport.use(new LocalStrategy({
-        usernameField: 'email'
-    }, authenticateUser))
+        usernameField: 'email'}, (authenticateUser)))
     passport.serializeUser((user, done) => {})
     passport.deserializeUser((id, done) => {})
 
